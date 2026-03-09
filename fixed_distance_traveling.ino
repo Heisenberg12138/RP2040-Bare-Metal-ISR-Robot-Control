@@ -1,9 +1,4 @@
-/*
- * Student name : [ Yanran Zhao ]
- * Student number : [ 5902703 ]
- *
- * Assignment 5: fixed distance
- */
+
 #define LS A1   // GPIO27
 #define RS A0   // GPIO26
 #define L_PWM   19
