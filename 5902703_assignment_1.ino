@@ -1,8 +1,3 @@
-/* *
- * Student name : [ Yanran Zhao ]
- * Student number : [ 5902703 ]
- * Assignment1: Variable speed
- */
 
 #include "hardware/pwm.h"
 #include "hardware/gpio.h"
