@@ -1,58 +1,46 @@
-📌 Project Overview
-This repository contains a collection of five embedded firmware implementations for an RP2040-based autonomous robot. The project demonstrates a progression from high-level control to low-level hardware optimization, focusing on PWM register manipulation, Interrupt Service Routines (ISR), and real-time sensor fusion.
+# 🏎️ RP2040 Autonomous Robot: Bare-Metal & ISR Control
 
-🚀 Modules & Assignments
-1. Variable Speed Control (Hardware PWM)
-Implementation: Directly configures the RP2040 hardware PWM slices using the hardware/pwm.h SDK.
+> **Autonomous Robotics Project** > A high-performance firmware implementation for an RP2040-powered robot, transitioning from high-level abstractions to direct hardware register manipulation and interrupt-driven logic.
 
-Key Feature: Instead of standard analogWrite, it manipulates pwm_hw->slice[slice].cc registers for high-precision duty cycle control.
+---
 
-Logic: Includes a "kick-start" feature to overcome motor static friction and implements smooth acceleration/deceleration curves.
+## 📌 Project Overview
+This repository contains five distinct firmware modules developed for an autonomous car robot. The project demonstrates advanced embedded techniques including **Hardware PWM configuration**, **External Interrupts (ISR)**, and **Real-time Sensor Fusion** for navigation and obstacle avoidance.
 
-2. Interrupt-Driven Obstacle Detection
-Implementation: Uses a non-blocking approach with External Interrupts (ISR) on the Echo pin.
 
-Key Feature: Measures pulse duration via micros() inside an ISR, allowing the main loop to remain responsive.
 
-Safety: Implements an emergency stop if an object is detected within 15cm.
+## 🛠️ Hardware Architecture
+* **Controller:** Raspberry Pi Pico H (Dual-core ARM Cortex-M0+)
+* **Sensing Suite:**
+    * `HC-SR04`: Ultrasonic sensor for precision distance measurement.
+    * `TCRT5000`: Infrared reflective sensors for surface detection.
+    * `B83609`: Photoelectric encoders for odometry.
+* **Actuators:** L9110 H-Bridge driver with dual DC gear motors.
 
-3. Adaptive Line Follower
-Implementation: A state-aware navigation system using IR reflective sensors.
+---
 
-Logic: Features a "Same Direction Counter" to adjust steering intensity. The longer the robot stays off-center, the sharper it turns (TURN_SLIGHT vs TURN_SHARP), preventing over-oscillation on straight lines while handling tight curves.
+## 🚀 Modules & Assignments
 
-4. Autonomous Obstacle Avoidance
-Implementation: A complex state machine that integrates line following with ultrasonic scanning.
+### 1️⃣ Variable Speed Control (Register-Level PWM)
+* **Implementation:** Directly manipulates the `pwm_hw->slice` registers via the Pico SDK to manage motor duty cycles.
+* **Technical Highlight:** Bypassed standard abstractions to configure hardware PWM slices and clock dividers manually. 
+* **Logic:** Includes a **Kick-start** feature (initial high-power pulse) to overcome static friction of the gear motors.
 
-Logic: * Phase 1 (Scan): Incremental scanning to find a clear path.
+### 2️⃣ Interrupt-Driven Obstacle Detection
+* **Logic:** Utilizes `attachInterrupt` to capture signal changes on the Echo pin via an **Interrupt Service Routine (ISR)**.
+* **Safety:** Implements an immediate emergency stop protocol when an object is detected within a **15cm** threshold.
 
-Phase 2 (Maneuver): Executes a timed detour.
 
-Phase 3 (Re-acquisition): Performs a secondary scan and a "Big Right" turn logic to re-locate and lock back onto the black line.
 
-5. Fixed-Distance Odometry
-Implementation: Precision movement using a physical speed encoder.
+### 3️⃣ Adaptive Line Follower
+* **Algorithm:** Employs a "Keep-in" logic to maintain the black line between two IR sensors.
+* **Innovation:** Features a **Same Direction Counter**. This dynamically scales steering intensity (from `SLIGHT` to `SHARP`) based on the duration of deviation, preventing oscillations on straightaways and "derailing" on tight curves.
 
-Key Feature: Implements Software Debouncing inside the ISR (if (now - lastEncoderTime > 300)) to filter out mechanical noise from the encoder wheel.
+### 4️⃣ Autonomous Obstacle Avoidance
+* **Workflow:** 1. **Scanning Phase:** Incremental rotation to find a clear path.
+    2. **Maneuver Phase:** Executes a timed detour detour.
+    3. **Recovery Phase:** Uses side-sensor feedback and a "Big Right" turn logic to re-locate the line and resume navigation.
 
-Calibration: Converts raw encoder "ticks" to centimeters using a calibrated constant (0.52 cm/tick).
-
-🛠 Hardware Mapping
-MCU: Raspberry Pi Pico (RP2040)
-
-Motor Driver: L9110 H-Bridge (Pins 18, 19, 20, 21)
-
-Ultrasonic: Trigger (Pin 7), Echo (Pin 6)
-
-IR Sensors: Left (A1/GPIO27), Right (A0/GPIO26)
-
-Encoder: Left Wheel (Pin 3)
-
-⚙️ How to Use
-Ensure you have the Raspberry Pi Pico SDK and Arduino-Pico core installed.
-
-Each assignment is a standalone .ino / .cpp file.
-
-Upload the desired assignment to the Pico via USB.
-
-Monitor real-time telemetry via the Serial Monitor (115200 baud).
+### 5️⃣ Fixed-Distance Traveling
+* **Accuracy:** Achieves precision movement with a calibrated error margin of less than **10cm**.
+* **Feature:** Integrated **Software Debouncing** within the encoder ISR (`micros()` checking) to filter out mechanical noise, ensuring reliable and accurate odometry data.
