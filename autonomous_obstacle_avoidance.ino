@@ -1,10 +1,3 @@
-/*
- * Student name : [ Yanran Zhao ]
- * Student number : [ 5902703 ]
- *
- * Assignment 4: obstcale avoidance
- */
-
 #define LS A1   // GPIO27
 #define RS A0   // GPIO26
 #define L_PWM   19
