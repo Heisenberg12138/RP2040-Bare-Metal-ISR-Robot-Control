@@ -1,10 +1,3 @@
-/*
- * Student name : [ Yanran Zhao ]
- * Student number : [ 5902703 ]
- *
- * Assignment 2: Obstacle detection 
- */
-
 // Motor 
 #define A1A 19   
 #define A1B 18   
