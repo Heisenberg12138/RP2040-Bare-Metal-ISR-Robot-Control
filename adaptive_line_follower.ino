@@ -1,9 +1,3 @@
-/*
- * Student name : [ Yanran Zhao ]
- * Student number : [ 5902703 ]
- *
- * Assignment 3: Line follower
- */
 #define LS A1   // GPIO27
 #define RS A0   // GPIO26
 
